@@ -1,0 +1,183 @@
+/* General */
+body { 
+    font-family: Arial, sans-serif; 
+    margin:0; 
+    padding:0; 
+    background: #f9f9f9; 
+}
+.container { 
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+}
+
+/* Header */
+.header { 
+    background: #fff; 
+    padding: 15px 0; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+.header .logo { 
+    font-weight: bold; 
+    font-size: 24px; 
+}
+.nav-links a { 
+    margin-left: 20px; 
+    text-decoration: none; 
+    color: #333; 
+}
+.nav-links a.active { 
+    color: #c87fca; 
+}
+
+/* Footer */
+.footer { 
+    background:#333; 
+    color:#fff; 
+    text-align:center; 
+    padding:20px; 
+    margin-top:40px; 
+}
+
+/* Hero Carousel */
+.carousel { 
+    position: relative; 
+    overflow: hidden; 
+    border-radius: 10px; 
+    margin: 40px 0; 
+}
+.carousel-track { 
+    display: flex; 
+    transition: transform 0.6s ease-in-out; 
+}
+.slide { 
+    min-width: 100%; 
+    position: relative; 
+}
+.slide img { 
+    width: 100%; 
+    height: 500px; 
+    object-fit: cover; 
+}
+.slide-caption { 
+    position: absolute; 
+    bottom: 20%; 
+    left: 10%; 
+    color:#fff; 
+    max-width:500px; 
+}
+.slide-caption h2 { 
+    font-size: 48px; 
+    margin-bottom:10px; 
+    text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.slide-caption p { 
+    font-size:18px; 
+    margin-bottom:20px; 
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.cta { 
+    background: #c87fca; 
+    color:#fff; 
+    padding:12px 24px; 
+    border-radius:25px; 
+    text-decoration:none;
+}
+.carousel-btn { 
+    position:absolute; 
+    top:50%; 
+    transform:translateY(-50%); 
+    background:rgba(0,0,0,0.4); 
+    border:none; 
+    color:#fff; 
+    font-size:30px; 
+    cursor:pointer; 
+    padding:10px; 
+    border-radius:50%; 
+}
+.carousel-btn:hover { 
+    background:rgba(0,0,0,0.7);
+}
+.carousel-btn.prev { 
+    left:15px;
+}
+.carousel-btn.next { 
+    right:15px;
+}
+
+/* Products Grid */
+.products-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); 
+    gap:24px; 
+    margin-top:20px; 
+}
+.card { 
+    background:#fff; 
+    border-radius:10px; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+    padding:20px; 
+    transition: transform 0.2s;
+}
+.card:hover { 
+    transform: translateY(-3px);
+}
+.card img { 
+    width:100%; 
+    border-radius:8px; 
+}
+.card h3 { 
+    margin:10px 0 5px; 
+    color: #c87fca; 
+}
+
+/* News */
+.news-preview { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); 
+    gap:24px; 
+    margin-top:20px;
+}
+.news-item { 
+    background:#fff; 
+    border-radius:10px; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+    padding:20px; 
+    transition: transform 0.2s;
+}
+.news-item:hover { 
+    transform: translateY(-3px);
+}
+.news-item h3 { 
+    color: #c87fca; 
+    margin-bottom:10px;
+}
+.meta { 
+    font-size:12px; 
+    color:#999; 
+    margin-bottom:10px; 
+}
+
+/* Contact Card */
+.contact-card { 
+    background:#fff; 
+    padding:20px; 
+    border-radius:10px; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+}
+
+/* --- NEW STYLES BELOW: Fixes large images on individual product/project pages --- */
+.container img {
+    /* Prevents the image from being wider than its container */
+    max-width: 100%; 
+    /* Ensures the height scales proportionally to the new width */
+    height: auto; 
+    /* Optionally, set a maximum height for very large images */
+    max-height: 80vh; 
+    /* Center the image if it's smaller than the container */
+    display: block; 
+    margin: 20px auto;
+    /* Optional: subtle border and shadow for presentation */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

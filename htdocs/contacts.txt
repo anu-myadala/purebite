@@ -1,0 +1,4 @@
+company_name=PureBite Beauty
+address=123 Herbal Lane, Los Angeles, CA 90001
+email=info@purebitebeauty.com
+phone=+1-310-555-0198
