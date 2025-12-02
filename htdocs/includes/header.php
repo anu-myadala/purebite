@@ -1,5 +1,18 @@
 <?php
 session_start(); // allows tracking of login state
+
+// Include session helper for consistent user_id management (if it exists)
+// This ensures user_id is set for compatibility with combined website redirect.php
+if (file_exists(__DIR__ . '/session_helper.php')) {
+    require_once(__DIR__ . '/session_helper.php');
+    ensureUserID(); // Ensure user_id is set if user is logged in
+} else {
+    // Fallback: Ensure user_id is set if user is logged in (without helper file)
+    if (isset($_SESSION['user']) && !isset($_SESSION['user_id'])) {
+        $_SESSION['user_id'] = abs(crc32($_SESSION['user'])) % 1000000;
+    }
+}
+
 if (!isset($pageTitle)) $pageTitle = "PureBite Beauty";
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>

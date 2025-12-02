@@ -26,6 +26,19 @@ if(!$userVerified) {
 }
 
 // --- Helper functions ---
+
+// Helper function to get user_id from username
+// This ensures redirect.php can find user_id in session
+// Defined BEFORE it's used to avoid any potential issues
+function getUserID($username) {
+    // Option 1: Simple hash-based ID (consistent for same username)
+    return abs(crc32($username)) % 1000000; // Returns 0-999999
+    
+    // Option 2: If you have a user ID mapping, use that instead:
+    // $userMap = ['admin' => 1, 'user2' => 2, ...];
+    // return isset($userMap[$username]) ? $userMap[$username] : 0;
+}
+
 function checkPassword($userpassword, $filedata) {
     if(trim($userpassword) == trim($filedata[1])) return true;
     else return false;
@@ -34,6 +47,9 @@ function checkPassword($userpassword, $filedata) {
 function accessGranted($name) {
     session_start();
     $_SESSION['user'] = $name;
+    // Set user_id for compatibility with combined website redirect.php
+    // Generate a consistent numeric ID from username (or use a mapping)
+    $_SESSION['user_id'] = getUserID($name);
     header("Location: users.php");
     exit;
 }
