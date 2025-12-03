@@ -35,6 +35,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <a href="/products.php" class="<?php if($currentPage=='products.php') echo 'active'; ?>">Products</a>
         <a href="/news.php" class="<?php if($currentPage=='news.php') echo 'active'; ?>">News</a>
         <a href="/contact.php" class="<?php if($currentPage=='contact.php') echo 'active'; ?>">Contacts</a>
+        <a href="/all_users.php" class="<?php if($currentPage=='all_users.php') echo 'active'; ?>">Partner Companies</a>
 
         <?php if (isset($_SESSION['user'])): ?>
           <a href="/login/users.php" class="<?php if($currentPage=='users.php') echo 'active'; ?>">Admin</a>
