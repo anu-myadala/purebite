@@ -22,6 +22,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
   <meta charset="utf-8">
   <title><?php echo htmlspecialchars($pageTitle); ?></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="google-site-verification" content="YnoiaXqhMJE3gKAPtn9HxrW3kEvMFwe28iCI_hi6xNg" />
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
