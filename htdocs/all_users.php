@@ -58,12 +58,34 @@ function fetchUsers($url) {
 
     // Lambert's format: check if 'users' key exists
     if (isset($data['users']) && is_array($data['users'])) {
-        return $data['users'];
+        // Normalize field names for consistency (handle joined_date vs join_date)
+        $normalized = [];
+        foreach ($data['users'] as $user) {
+            $normalized[] = [
+                'name' => $user['name'] ?? 'Unknown',
+                'role' => $user['role'] ?? ($user['position'] ?? '—'),
+                'email' => $user['email'] ?? '—',
+                'status' => $user['status'] ?? '—',
+                'join_date' => $user['join_date'] ?? $user['joined_date'] ?? '—'
+            ];
+        }
+        return $normalized;
     }
 
     // Simple array (like your own)
     if (isset($data[0]) && is_array($data[0])) {
-        return $data;
+        // Normalize field names for consistency
+        $normalized = [];
+        foreach ($data as $user) {
+            $normalized[] = [
+                'name' => $user['name'] ?? 'Unknown',
+                'role' => $user['role'] ?? ($user['position'] ?? '—'),
+                'email' => $user['email'] ?? '—',
+                'status' => $user['status'] ?? '—',
+                'join_date' => $user['join_date'] ?? $user['joined_date'] ?? '—'
+            ];
+        }
+        return $normalized;
     }
 
     // If data is not recognized
@@ -107,8 +129,8 @@ $companies = [
             <td><?= htmlspecialchars($user['name'] ?? 'Unknown') ?></td>
             <td><?= htmlspecialchars($user['role'] ?? ($user['position'] ?? '—')) ?></td>
             <td><?= htmlspecialchars($user['email'] ?? '—') ?></td>
-            <td><?= htmlspecialchars($user['status'] ?? '—') ?></td>
-            <td><?= htmlspecialchars($user['join_date'] ?? '—') ?></td>
+            <td><?= htmlspecialchars(ucfirst($user['status'] ?? '—')) ?></td>
+            <td><?= htmlspecialchars($user['join_date'] ?? $user['joined_date'] ?? '—') ?></td>
           </tr>
         <?php endforeach; ?>
       <?php else: ?>
