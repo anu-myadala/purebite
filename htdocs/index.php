@@ -58,7 +58,7 @@ include("includes/header.php");
   </div>
   <div class="card">
     <a href="/products/product3.php">
-      <img src="/images/claymask.jpg" alt="Clay Mask">
+      <img src="/images/claymask.jpg" alt="Detox Clay Mask" onerror="this.src='/images/mask.jpg'; this.alt='Detox Clay Mask';">
       <h3>Detox Clay Mask</h3>
     </a>
     <p>Pore-cleansing mask with bentonite clay and green tea extract.</p>

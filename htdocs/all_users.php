@@ -30,7 +30,16 @@ function fetchUsers($url) {
     }
 
     if ($httpCode !== 200) {
-        return ["error" => "HTTP $httpCode error from $url"];
+        // Handle specific HTTP error codes with user-friendly messages
+        if ($httpCode == 429) {
+            return ["error" => "API rate limit exceeded. Please try again later."];
+        } elseif ($httpCode == 404) {
+            return ["error" => "API endpoint not found"];
+        } elseif ($httpCode == 503) {
+            return ["error" => "Service temporarily unavailable"];
+        } else {
+            return ["error" => "HTTP $httpCode error from API endpoint"];
+        }
     }
 
     if (!$response || trim($response) === '') {
