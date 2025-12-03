@@ -5,6 +5,11 @@ include("includes/header.php");
 
 <h1 style="text-align:center;">All Partner Company Users</h1>
 <p style="text-align:center;">Below are the users from PureBite Beauty and our partner companies.</p>
+<p style="text-align:center; font-size:0.9em; color:#666; max-width:800px; margin:10px auto;">
+    <strong>Note:</strong> This page displays employee/user information from three partner 
+    company websites via their public API endpoints as part of a CMPE 272 academic project 
+    demonstration. All data shown is publicly available through legitimate API sources.
+</p>
 
 <?php
 function fetchUsers($url) {
