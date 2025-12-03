@@ -43,22 +43,22 @@ include("includes/header.php");
 
 <div class="products-grid">
   <div class="card">
-    <a href="/products.php">
-      <img src="https://images.unsplash.com/photo-1598514982356-2802aa4a6514?auto=format&fit=crop&w=600&q=80" alt="Moisturizer Cream">
+    <a href="/products/product1.php">
+      <img src="/images/moisturizer.jpg" alt="Moisturizer Cream">
       <h3>Hydrating Face Cream</h3>
     </a>
     <p>Deeply moisturizing, chemical-free face cream made with aloe & shea butter.</p>
   </div>
   <div class="card">
-    <a href="/products.php">
-      <img src="https://images.unsplash.com/photo-1600185365483-26d4c7b3b7bc?auto=format&fit=crop&w=600&q=80" alt="Herbal Serum">
+    <a href="/products/product2.php">
+      <img src="/images/serum.jpg" alt="Herbal Serum">
       <h3>Herbal Glow Serum</h3>
     </a>
     <p>Botanical serum infused with vitamin C & rosehip oil for a natural glow.</p>
   </div>
   <div class="card">
-    <a href="/products.php">
-      <img src="https://images.unsplash.com/photo-1612817159949-1c1c472b725f?auto=format&fit=crop&w=600&q=80" alt="Clay Mask">
+    <a href="/products/product3.php">
+      <img src="/images/claymask.jpg" alt="Clay Mask">
       <h3>Detox Clay Mask</h3>
     </a>
     <p>Pore-cleansing mask with bentonite clay and green tea extract.</p>

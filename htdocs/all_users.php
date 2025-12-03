@@ -17,20 +17,37 @@ function fetchUsers($url) {
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ignore SSL for demo
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10); // 10 second timeout
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
     $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $error = curl_error($ch);
     curl_close($ch);
 
-    if ($error || !$response) {
-        return ["error" => "Could not connect to $url"];
+    if ($error) {
+        return ["error" => "Connection error: " . $error];
+    }
+
+    if ($httpCode !== 200) {
+        return ["error" => "HTTP $httpCode error from $url"];
+    }
+
+    if (!$response || trim($response) === '') {
+        return ["error" => "Empty response from $url"];
+    }
+
+    // Check if response is HTML (not JSON)
+    if (stripos($response, '<html') !== false || stripos($response, '<!DOCTYPE') !== false) {
+        return ["error" => "Received HTML instead of JSON from $url"];
     }
 
     $data = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
-        return ["error" => "Invalid JSON data from $url"];
+        return ["error" => "Invalid JSON: " . json_last_error_msg() . " from $url"];
     }
 
-    // Lambert’s format: check if 'users' key exists
+    // Lambert's format: check if 'users' key exists
     if (isset($data['users']) && is_array($data['users'])) {
         return $data['users'];
     }
@@ -45,7 +62,10 @@ function fetchUsers($url) {
 }
 
 // === Company Endpoints ===
-$companyA = fetchUsers("https://anukrithimyadala.42web.io/users_api.php");
+// Use current site's URL for Company A
+$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'];
+$companyA = fetchUsers("$protocol://$host/users_api.php");
 $companyB = fetchUsers("https://lambertnguyen.cloud/api/users");
 $companyC = fetchUsers("https://php-mysql-hosting-project.onrender.com/api/local_users.php");
 
