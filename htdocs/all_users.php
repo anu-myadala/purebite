@@ -138,9 +138,9 @@ $companyA = fetchUsers("$protocol://$host/users_api.php");
 usleep(500000); // 0.5 second delay
 $companyB = fetchUsers("https://lambertnguyen.cloud/api/users");
 
-// Add delay before Company C (most rate-limited)
+// Add delay before Company C (using local endpoint to avoid rate limiting)
 usleep(1000000); // 1 second delay
-$companyC = fetchUsers("https://php-mysql-hosting-project.onrender.com/api/local_users.php");
+$companyC = fetchUsers("$protocol://$host/local_users.php");
 
 // Combine them
 $companies = [
