@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: purebite-beauty
+    env: docker
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PHP_VERSION
+        value: 8.2
+    plan: free
+

@@ -1,0 +1,19 @@
+# Ignore documentation files
+*.md
+*.txt
+!htdocs/**/*.txt
+
+# Ignore git files
+.git
+.gitignore
+
+# Ignore temporary files
+*.tmp
+*.log
+
+# Ignore IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
