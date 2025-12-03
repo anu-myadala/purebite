@@ -63,8 +63,10 @@ function fetchUsers($url) {
 
 // === Company Endpoints ===
 // Use current site's URL for Company A
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-$host = $_SERVER['HTTP_HOST'];
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+            (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 $companyA = fetchUsers("$protocol://$host/users_api.php");
 $companyB = fetchUsers("https://lambertnguyen.cloud/api/users");
 $companyC = fetchUsers("https://php-mysql-hosting-project.onrender.com/api/local_users.php");
