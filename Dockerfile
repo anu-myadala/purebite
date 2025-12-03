@@ -1,8 +1,8 @@
 # Use official PHP with Apache
 FROM php:8.2-apache
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+# Enable Apache modules
+RUN a2enmod rewrite headers
 
 # Install required PHP extensions
 RUN apt-get update && apt-get install -y \
@@ -21,14 +21,17 @@ COPY htdocs/ /var/www/html/
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Configure Apache to handle .php files
+# Configure Apache
 RUN echo '<Directory /var/www/html/>\n\
-    Options Indexes FollowSymLinks\n\
+    Options -Indexes +FollowSymLinks\n\
     AllowOverride All\n\
     Require all granted\n\
 </Directory>' > /etc/apache2/conf-available/docker-php.conf
 
 RUN a2enconf docker-php
+
+# Ensure PHP is enabled (should be by default, but making sure)
+RUN a2enmod php8.2 || true
 
 # Expose port 80
 EXPOSE 80
