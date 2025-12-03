@@ -12,32 +12,66 @@ include("includes/header.php");
 </p>
 
 <?php
-function fetchUsers($url) {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ignore SSL for demo
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10); // 10 second timeout
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $error = curl_error($ch);
-    curl_close($ch);
+function fetchUsers($url, $retries = 2) {
+    $attempt = 0;
+    
+    while ($attempt <= $retries) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // ignore SSL for demo
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15); // 15 second timeout
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Accept: application/json',
+            'Cache-Control: no-cache'
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
 
-    if ($error) {
-        return ["error" => "Connection error: " . $error];
-    }
+        if ($error) {
+            if ($attempt < $retries) {
+                $attempt++;
+                sleep(2 * $attempt); // Exponential backoff: 2s, 4s
+                continue;
+            }
+            return ["error" => "Connection error: " . $error];
+        }
 
-    if ($httpCode !== 200) {
-        // Handle specific HTTP error codes with user-friendly messages
+        if ($httpCode == 200) {
+            break; // Success, exit retry loop
+        }
+
+        // Handle specific HTTP error codes
         if ($httpCode == 429) {
-            return ["error" => "API rate limit exceeded. Please try again later."];
+            if ($attempt < $retries) {
+                // Wait longer for rate limit (exponential backoff)
+                $waitTime = pow(2, $attempt + 1); // 2s, 4s, 8s
+                sleep($waitTime);
+                $attempt++;
+                continue; // Retry
+            }
+            return ["error" => "API rate limit exceeded. Please refresh the page in a few moments."];
         } elseif ($httpCode == 404) {
             return ["error" => "API endpoint not found"];
         } elseif ($httpCode == 503) {
+            if ($attempt < $retries) {
+                $attempt++;
+                sleep(3 * $attempt);
+                continue;
+            }
             return ["error" => "Service temporarily unavailable"];
         } else {
+            if ($attempt < $retries && $httpCode >= 500) {
+                // Retry on server errors
+                $attempt++;
+                sleep(2 * $attempt);
+                continue;
+            }
             return ["error" => "HTTP $httpCode error from API endpoint"];
         }
     }
@@ -99,7 +133,13 @@ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
             (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? 'localhost';
 $companyA = fetchUsers("$protocol://$host/users_api.php");
+
+// Add small delay to avoid rate limiting
+usleep(500000); // 0.5 second delay
 $companyB = fetchUsers("https://lambertnguyen.cloud/api/users");
+
+// Add delay before Company C (most rate-limited)
+usleep(1000000); // 1 second delay
 $companyC = fetchUsers("https://php-mysql-hosting-project.onrender.com/api/local_users.php");
 
 // Combine them
